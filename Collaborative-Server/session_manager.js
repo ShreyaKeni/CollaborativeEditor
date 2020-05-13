@@ -1,32 +1,17 @@
-/**
- * @requires session - provides operation to create and maintain user-sessions
-*/
+
 var projectManager = require('./projectManager');
 var doc_session = require('./session');
 var doc_utility = require('./utility');
 
-/**
- * Path of directory where user-projects are saved
- **/
+
 var dirName = __dirname + '\\UserProjects';
 
-/**
- * SessionManager is a class whose objective is to create, maintain sessions. It also route user-requests to appropriate sessions    
- * @constructor
- */
+
 function SessionManager() {
 	this.sessions = {};
 }
 
-/**
- * Creates a new session for Doc#docId, if none exists. Else uses an existing session. Adds the User#userId to the session. 
- *
- * @param request {Object} User's request object
- * @param response {Object} User's response object
- * @param userId {String} User's userId who has sent REGISTER request.
- * @param docId {String} Doc's docId which user wants to edit.
- * @param docPath {String} Path of the doc on server.
- */
+
 SessionManager.prototype.handleRegister = function(request, response, userId, docId) {
 	try {
 		var self = this;
@@ -57,15 +42,7 @@ SessionManager.prototype.handleRegister = function(request, response, userId, do
 	} 
 };
 
-/**
- * Removes the User#userId to the session. Destroys it if no user is currently editing the doc.
- *
- * @param request {Object} User's request object
- * @param response {Object} User's response object
- * @param userId {String} User's userId who has sent REGISTER request.
- * @param docId {String} Doc's docId which user wants to edit.
- */
-SessionManager.prototype.handleUnregister = function(request, response, userId, docId) {
+Manager.prototype.handleUnregister = function(request, response, userId, docId) {
 	console.log('Unregister received');
 	try {
 		if (this.sessions[docId] != undefined) {
@@ -95,14 +72,7 @@ SessionManager.prototype.handleUnregister = function(request, response, userId, 
 	}
 };
 
-/**
- * Checks for validity of requests. Routes requests to session Doc#docId, if one exists.
- *
- * @param request {Object} User's request object
- * @param response {Object} User's response object
- * @param userId {String} User's userId who has sent PUSH request.
- * @param docId {String} Doc's docId which user wants to edit.
- */
+
  SessionManager.prototype.handleGet = function(request, response, userId, docId) {
 	 var self = this;
 	 console.log('GET received: ' + userId);
@@ -171,14 +141,7 @@ SessionManager.prototype.handlePush = function(request, response, userId, docId)
 //Lets export
 module.exports.SessionManager = SessionManager;
 
-/**
- * Utility Functions
- **/
- 
-/**
- * @param docId {String} Doc's docId which user wants to edit.
- * @callback called when docPath for Doc#docId is retrieved from database
- */
+
 function getDocPath(docId, callback) {
 	projectManager.file.find({fileID: docId}, function(err, data){
 		data.forEach(function(entry){
@@ -189,10 +152,7 @@ function getDocPath(docId, callback) {
 	});
 }
 
-/**
- * @param filePath {String} filePath with dot(.) as separator
- * @return {String} filePath with dot(.) replaced with slash(/) as separator
- */
+
 function resolve(filePath) {
     var docPath = "";
     for(var i = 0; i < filePath.length; ++i) {
