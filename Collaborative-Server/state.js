@@ -1,18 +1,10 @@
 var fs = require('fs');
 
-/**
- * required modules
- * @requires rope - maintains docState
- */
+
 var rope = require('./rope');
 var doc_utility = require('./utility');
 
-/**
- * State is a class which maintains info about current server-state of Doc#docId and edits made during the session.
- * @constructor
- * @param docId {String} docId of Doc, to be edited
- * @param docPath {String} Path of Doc#docId on server
- */
+
 function State (docId, docPath) {
 	this.docId = docId;
 	this.docPath = docPath;
@@ -43,24 +35,17 @@ function State (docId, docPath) {
 	);
 }
 
-/**
- * @return {Number} Returns the synStamp of current-state of doc
- */
+
 State.prototype.getSynStamp = function() {
 	return this.transformedOperations.length; 
 };
 
-/**
- * @return {String} Returns the current-state of server`
- */
+
 State.prototype.getState = function() {
 	return this.docState.toString();
 };
 
-/**
- * apply operations to server-state of doc
- * @param operation {Object} edit-operation that needs to be performed.
- */
+
 State.prototype.applyToRope = function(operation) {
 	if (operation.type == 'INSERT') {
 		if (operation.position < 0 || operation.position > this.docState.length) {
@@ -79,9 +64,7 @@ State.prototype.applyToRope = function(operation) {
 	}
 };
 
-/**
- * writes docState to file and stops the periodic write-callback from execution
- */
+
 State.prototype.cleanup = function() {
 	clearInterval(this.interval);
 
