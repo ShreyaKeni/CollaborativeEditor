@@ -1,19 +1,10 @@
-/**
- *
- * @requires mongoose: connector for node.js and mongodb
- * @requires fs: provides functions for file creation and management
- * @requires mkdirp: provides functions for directory creation and management
- * @requires crypto: used for generating md5sum for a complete filePath which in turn acts as docId
- *
- **/
+
 var mongoose = require('mongoose');
 var fs = require('fs');
 var mkdirp = require('mkdirp');
 var crypto = require('crypto');
 
-/**
- * Schemas
- */
+
 var Schema = mongoose.Schema;
 
 var fileSchema = new Schema({
@@ -35,23 +26,15 @@ var userProjectSchema = new Schema({
 });
 var userProject = mongoose.model('userProject', userProjectSchema);
 
-/**
- * Path of directory where user-projects are saved
- **/
+
 var dirName = __dirname + "\\UserProjects";
 
-/**
- * Functions to be made available for public use
- */
+
 module.exports = {
 
     file : mongoose.model('files', fileSchema),
 
-    /**
-     * @param request {Object} User's request object
-     * @param response {Object} User's response object
-     * @param path {String} path of directory user wants to view
-     */
+    
     view : function(request, response, path) {
         try {
             //resolves directory path. For more information about 'resolution' consult resolve function
@@ -67,12 +50,7 @@ module.exports = {
         }
     },
 
-    /**
-     * @param request {Object} User's request object
-     * @param request.body {Object} Node object user want to add to path directory
-     * @param response {Object} User's response object
-     * @param path {String} path of directory user want to view
-     */
+    
     addNode : function(request, response, path) {
         try {
             var node = request.body;
@@ -168,14 +146,7 @@ module.exports = {
 
 };
 
-/**
- * Utility Functions
- **/
 
-/**
- * @param path {String} path of directory
- * @callback To be called when all directory items are pased and their info-objects are pushed into contents array
- */
 function getCollectionContent(path, resolvedPath, callback) {
     try {
         //reads the directory
@@ -243,10 +214,7 @@ function getCollectionContent(path, resolvedPath, callback) {
     }
 }
 
-/**
- * @param path {String} Path with dot(.) as separator
- * @return {String} Path with dot(.) replaced with slash(/) as separator
- */
+
 function resolve(path) {
     var resolvedPath = "";
     for(var i = 0; i  < path.length; ++i){
@@ -259,10 +227,7 @@ function resolve(path) {
     return resolvedPath;
 }
 
-/**
- * @return username
- * @param path from which username is to be extracted
- */
+
 function extractUsername(path) {
     var username = "";
     for(var i = 1; i  < path.length; ++i){
@@ -274,11 +239,7 @@ function extractUsername(path) {
     return username;
 }
 
-/**
- * Checks if the path can be a valid path for User-Projects
- * @return true/false
- * @param path to be checked for validity
- */
+
 function isProject(path) {
     var count = 0;
     for(var i = 0; i  < path.length; ++i){
