@@ -1,11 +1,7 @@
-/**
- * Utility Functions
- */
+
  
 module.exports = {
-	/**
-	 * Perform logging, can be redirected if needed. 
-	 */
+	
 	DEBUG: true,
 
 	log: function(title, desc) {
