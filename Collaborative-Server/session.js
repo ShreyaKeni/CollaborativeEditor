@@ -1,38 +1,23 @@
-/**
- * @requires doc_state - provides data-structures to maintain server-state
- * @requires doc_utility - provides utility functions
- * @requires OperationalTransform - performs Operational-Transformation of operations 
-*/
+
 var doc_state = require('./state');
 var doc_utility = require('./utility');
 var operationalTransform = require('./OT');
 
-/**
- * Session is a wrapper class which maintains the state, info about active users, their respective state-pulling time-stamps and cursor-positions  
- * @constructor
- * @param docId {String} docId of Doc, to be edited
- * @param docPath {String} Path of Doc#docId
- */
+
 function Session(docId, docPath) {
 	this.state = new doc_state.State(docId, docPath);
 	this.userCursorPos = {};
 	this.userSynTime = {};
 }
 
-/**
- * Adds the user to the session
- * @param userId {String} User's userId to be added to this session
- */
+
 Session.prototype.addUser = function(userId) {
 	this.userSynTime[userId] = this.state.getSynStamp();
 	this.userCursorPos[userId] = 0;
 };
 
 
-/**
- * Removes the user from the session
- * @param userId {String} User's userId to be removed from this session
- */
+
 Session.prototype.removeUser = function(userId) {
 	try {
 		if (userId in this.userSynTime && userId in this.userCursorPos) {
@@ -49,14 +34,7 @@ Session.prototype.removeUser = function(userId) {
 	}
 };
 
-/**
- * Handles PUSH request of session with Doc#docId
- *
- * @param request {Object} User's request object
- * @param request.body {Array} Edit-operations pushed by the user.
- * @param response {Object} User's response object
- * @param userId {String} User's userId who edited the document
- */
+
 Session.prototype.handlePush = function(request, response, userId) {
 	//state of Doc#docId
 	var state = this.state;
@@ -95,13 +73,7 @@ Session.prototype.handlePush = function(request, response, userId) {
 	});
 };
 
-/**
- * Handles GET request of session with Doc#docId
- *
- * @param request {Object} User's request object
- * @param response {Object} User's response object
- * @param userId {String} User's userId who wants to pull the state
- */
+
 Session.prototype.handleGet = function(request, response, userId) {
 	
 	var getOperation = request.body;
@@ -142,9 +114,7 @@ Session.prototype.handleGet = function(request, response, userId) {
 	}
 };
 
-/**
- * Clean-up the session from the server
- */
+
 Session.prototype.cleanup = function() {
 	this.state.cleanup();
 };
