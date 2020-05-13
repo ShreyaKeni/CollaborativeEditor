@@ -1,16 +1,4 @@
-/*
-The MIT License (MIT)
-Copyright (c) 2014 Automattic, Inc.
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
-/**
- * Creates a rope data structure
- *
- * @param {String} str - String to populate the rope.
- * @api public
- */
 
 function Rope(str) {
   // allow usage without `new`
@@ -21,36 +9,19 @@ function Rope(str) {
   adjust.call(this);
 }
 
-/**
- * The threshold used to split a leaf node into two child nodes.
- *
- * @api public
- */
+
 
 Rope.SPLIT_LENGTH = 1000;
 
-/**
- * The threshold used to join two child nodes into one leaf node.
- *
- * @api public
- */
+
 
 Rope.JOIN_LENGTH = 500;
 
-/**
- * The threshold used to trigger a tree node rebuild when rebalancing the rope.
- *
- * @api public
- */
+
 
 Rope.REBALANCE_RATIO = 1.2;
 
-/**
- * Adjusts the tree structure, so that very long nodes are split
- * and short ones are joined
- *
- * @api private
- */
+
 
 function adjust() {
   if (typeof this._value != 'undefined') {
@@ -69,11 +40,7 @@ function adjust() {
   }
 }
 
-/**
- * Converts the rope to a JavaScript String.
- *
- * @api public
- */
+
 
 Rope.prototype.toString = function() {
   if (typeof this._value != 'undefined') {
@@ -83,15 +50,7 @@ Rope.prototype.toString = function() {
   }
 }
 
-/**
- * Removes text from the rope between the `start` and `end` positions.
- * The character at `start` gets removed, but the character at `end` is 
- * not removed.
- *
- * @param {Number} start - Initial position (inclusive)
- * @param {Number} end - Final position (not-inclusive)
- * @api public
- */
+
 
 Rope.prototype.remove = function(start, end) {
   if (start < 0 || start > this.length) throw new RangeError('Start is not within rope bounds.');
@@ -118,13 +77,7 @@ Rope.prototype.remove = function(start, end) {
   adjust.call(this);
 }
 
-/**
- * Inserts text into the rope on the specified position.
- *
- * @param {Number} position - Where to insert the text
- * @param {String} value - Text to be inserted on the rope
- * @api public
- */
+
 
 Rope.prototype.insert = function(position, value) {
   if (typeof value != 'string') {
@@ -146,11 +99,6 @@ Rope.prototype.insert = function(position, value) {
   adjust.call(this);
 }
 
-/**
- * Rebuilds the entire rope structure, producing a balanced tree.
- *
- * @api public
- */
 
 Rope.prototype.rebuild = function() {
   if (typeof this._value == 'undefined') {
@@ -161,11 +109,6 @@ Rope.prototype.rebuild = function() {
   }
 }
 
-/**
- * Finds unbalanced nodes in the tree and rebuilds them.
- *
- * @api public
- */
 
 Rope.prototype.rebalance = function() {
   if (typeof this._value == 'undefined') {
@@ -179,15 +122,7 @@ Rope.prototype.rebalance = function() {
   }
 }
 
-/**
- * Returns text from the rope between the `start` and `end` positions.
- * The character at `start` gets returned, but the character at `end` is 
- * not returned.
- *
- * @param {Number} start - Initial position (inclusive)
- * @param {Number} end - Final position (not-inclusive)
- * @api public
- */
+
 
 Rope.prototype.substring = function(start, end) {
   if (typeof end == 'undefined') {
@@ -229,14 +164,7 @@ Rope.prototype.substring = function(start, end) {
   }
 }
 
-/**
- * Returns a string of `length` characters from the rope, starting
- * at the `start` position.
- *
- * @param {Number} start - Initial position (inclusive)
- * @param {Number} length - Size of the string to return
- * @api public
- */
+
 
 Rope.prototype.substr = function(start, length) {
   var end;
@@ -257,23 +185,13 @@ Rope.prototype.substr = function(start, length) {
   return this.substring(start, end);
 }
 
-/**
- * Returns the character at `position`
- *
- * @param {Number} position
- * @api public
- */
+
 
 Rope.prototype.charAt = function(position) {
   return this.substring(position, position + 1);
 }
 
-/**
- * Returns the code of the character at `position`
- *
- * @param {Number} position
- * @api public
- */
+
 
 Rope.prototype.charCodeAt = function(position) {
   return this.substring(position, position + 1).charCodeAt(0);
